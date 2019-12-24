@@ -6,6 +6,12 @@ GET http://127.0.0.1:8888/products
 
 ### Create product
 POST http://127.0.0.1:8888/products
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "price": 100
+}
 
 ###
 
@@ -36,6 +42,12 @@ GET http://127.0.0.1:8888/orders
 
 ### Create order
 POST http://127.0.0.1:8888/orders
+Content-Type: application/json
+
+{
+  "product_id": 1,
+  "quantity": 1
+}
 
 ###
 

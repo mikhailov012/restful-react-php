@@ -16,6 +16,11 @@ final class CreateProduct
 {
     public function __invoke(ServerRequestInterface $request)
     {
-        return JsonResponse::ok(json_encode(['message' => 'POST request to /products']));
+        $data = $request->getParsedBody();
+
+        return JsonResponse::ok(json_encode([
+            'message' => 'POST request to /products',
+            'product' => $data
+        ]));
     }
 }

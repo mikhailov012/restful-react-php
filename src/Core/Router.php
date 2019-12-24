@@ -32,8 +32,6 @@ class Router
 
     public function __invoke(ServerRequestInterface $request)
     {
-        throw new \Exception('Something went wrong');
-
         $routeInfo = $this->dispatcher->dispatch($request->getMethod(), $request->getUri()->getPath());
 
         switch ($routeInfo[0]) {
