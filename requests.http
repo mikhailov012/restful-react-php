@@ -1,0 +1,53 @@
+### Get all products
+GET http://127.0.0.1:8888/products
+
+###
+
+
+### Create product
+POST http://127.0.0.1:8888/products
+
+###
+
+
+### Get product by id
+GET http://127.0.0.1:8888/products/1
+
+###
+
+
+### Update product by id
+PUT http://127.0.0.1:8888/products/1
+
+###
+
+
+### Delete product by id
+DELETE http://127.0.0.1:8888/products/1
+
+###
+
+
+### Get all orders
+GET http://127.0.0.1:8888/orders
+
+###
+
+
+### Create order
+POST http://127.0.0.1:8888/orders
+
+###
+
+
+### Get order by id
+GET http://127.0.0.1:8888/orders/1
+
+###
+
+
+### Delete order by id
+DELETE http://127.0.0.1:8888/orders/1
+
+###
+
