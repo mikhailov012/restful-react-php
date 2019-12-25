@@ -72,7 +72,7 @@ $server = new Server($middleware);
 $socket = new \React\Socket\Server('127.0.0.1:8888', $loop);
 $server->listen($socket);
 
-$server->on('error', function (Throwable $error) use ($filesystem) {
+$server->on('error', function (Throwable $error) {
     echo 'Error: ' . $error->getMessage() . PHP_EOL;
 });
 
