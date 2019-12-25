@@ -17,13 +17,13 @@ Content-Type: application/json
 
 
 ### Get product by id
-GET http://127.0.0.1:8888/products/22
+GET http://127.0.0.1:8888/products/12
 
 ###
 
 
 ### Update product by id
-PUT http://127.0.0.1:8888/products/22
+PUT http://127.0.0.1:8888/products/12
 Content-Type: application/json
 
 {
@@ -35,7 +35,7 @@ Content-Type: application/json
 
 
 ### Delete product by id
-DELETE http://127.0.0.1:8888/products/22
+DELETE http://127.0.0.1:8888/products/13
 
 ###
 

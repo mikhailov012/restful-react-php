@@ -53,7 +53,7 @@ class ProductStorage extends Storage implements StorageInterface
         return $this->getByIdFromStorage($id)
             ->then(
                 function (Model $model) {
-                    return $this->mapRow($this->mapModel($model));
+                    return $this->mapRow($model->toArray());
                 }
             )
             ->otherwise(

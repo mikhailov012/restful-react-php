@@ -1,10 +1,11 @@
 <?php declare(strict_types=1);
 
-return __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-(Dotenv::createImmutable(__DIR__))->load();
+$env = Dotenv::createImmutable(__DIR__);
+$env->load();
 
 return [
     'dbname' => getenv('DB_NAME'),
