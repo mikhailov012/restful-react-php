@@ -20,6 +20,4 @@ interface StorageInterface
     public function delete(int $id): PromiseInterface;
 
     public function mapRow(array $row);
-
-    public function getStorageKeys(): array;
 }

@@ -4,6 +4,9 @@
 namespace App\Models\File;
 
 
+use Clue\React\Buzz\Browser;
+use React\Filesystem\Filesystem;
+
 final class Downloader
 {
     private $client;

@@ -27,7 +27,7 @@ class OrderStorage extends Storage implements StorageInterface
 
     public function __construct(ConnectionInterface $connection)
     {
-        parent::__construct($connection, self::TABLE_NAME, self::TABLE_KEYS);
+        parent::__construct($connection, self::TABLE_NAME, self::PRIMARY_KEY, self::TABLE_KEYS);
     }
 
     public function create(int $product_id = null, int $quantity = null): PromiseInterface
@@ -53,7 +53,7 @@ class OrderStorage extends Storage implements StorageInterface
         return $this->getByIdFromStorage($id)
             ->then(
                 function (Model $model) {
-                    return $this->mapRow($this->fromModelToRow($model, $this->getStorageKeys()));
+                    return $this->mapRow($this->mapModel($model));
                 }
             )
             ->otherwise(
@@ -94,10 +94,5 @@ class OrderStorage extends Storage implements StorageInterface
     public function mapRow(array $row)
     {
         return new Order((int)$row['id'], (int)$row['product_id'], (int)$row['quantity']);
-    }
-
-    public function getStorageKeys(): array
-    {
-        return array_merge([self::PRIMARY_KEY],self::TABLE_KEYS);
     }
 }

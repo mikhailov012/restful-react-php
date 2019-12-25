@@ -21,12 +21,18 @@ class Storage
      * @var string
      */
     private $tableName;
+
+    /**
+     * @var string
+     */
+    private $primaryKey;
+
     /**
      * @var array
      */
     private $keys;
 
-    public function __construct(ConnectionInterface $connection, string $tableName, array $keys)
+    public function __construct(ConnectionInterface $connection, string $tableName, string $primaryKey, array $keys)
     {
         $this->connection = $connection;
         $this->tableName = $tableName;
@@ -103,11 +109,11 @@ class Storage
             );
     }
 
-    protected function fromModelToRow(Model $model, $keys): array
+    protected function mapModel(Model $model): array
     {
         $row = [];
 
-        foreach ($keys as $key) {
+        foreach (array_merge([$this->primaryKey], $this->keys) as $key) {
             if (isset($model->{$key})) {
                 $row[$key] = $model->{$key};
             }
