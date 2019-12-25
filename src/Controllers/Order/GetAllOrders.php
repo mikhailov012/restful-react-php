@@ -9,13 +9,30 @@
 namespace App\Controllers\Order;
 
 
+use App\Controllers\OrderController;
 use App\Core\JsonResponse;
+use App\Storage\OrderStorage;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class GetAllOrders
+final class GetAllOrders extends OrderController
 {
+    public function __construct(OrderStorage $storage)
+    {
+        parent::__construct($storage);
+    }
+
     public function __invoke(ServerRequestInterface $request)
     {
-        return JsonResponse::ok(json_encode(['message' => 'GET request to /orders']));
+        return $this->storage->getAll()
+            ->then(
+                function (array $orders) {
+                    return JsonResponse::ok($orders);
+                }
+            )
+            ->otherwise(
+                function (\Exception $exception) {
+                    return JsonResponse::internalServerError($exception->getMessage());
+                }
+            );
     }
 }

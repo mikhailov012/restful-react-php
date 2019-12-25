@@ -17,19 +17,25 @@ Content-Type: application/json
 
 
 ### Get product by id
-GET http://127.0.0.1:8888/products/1
+GET http://127.0.0.1:8888/products/22
 
 ###
 
 
 ### Update product by id
-PUT http://127.0.0.1:8888/products/1
+PUT http://127.0.0.1:8888/products/22
+Content-Type: application/json
+
+{
+  "name": "Milk",
+  "price": 102
+}
 
 ###
 
 
 ### Delete product by id
-DELETE http://127.0.0.1:8888/products/1
+DELETE http://127.0.0.1:8888/products/22
 
 ###
 
@@ -45,8 +51,8 @@ POST http://127.0.0.1:8888/orders
 Content-Type: application/json
 
 {
-  "product_id": 1,
-  "quantity": 1
+  "product_id": 24,
+  "quantity": 2
 }
 
 ###

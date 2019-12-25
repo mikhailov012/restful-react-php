@@ -18,30 +18,48 @@ use App\Controllers\Product\UpdateProduct;
 use App\Core\ErrorHandler;
 use App\Core\JsonRequestDecoder;
 use App\Core\Router;
+use App\Storage\OrderStorage;
+use App\Storage\ProductStorage;
+use Dotenv\Dotenv;
 use FastRoute\DataGenerator\GroupCountBased;
 use FastRoute\RouteCollector;
 use FastRoute\RouteParser\Std;
 use React\EventLoop\Factory;
+use React\Filesystem\Filesystem;
 use React\Http\Server;
 
 require 'vendor/autoload.php';
 
-$loop = Factory::create();
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-$jsonHeader = ['Content-Type' => 'application/json'];
+(Dotenv::createImmutable(__DIR__))->load();
+
+$loop = Factory::create();
+$mysql = new \React\MySQL\Factory($loop);
+
+$uri = getenv('DB_USER') . ':' . getenv('DB_PASS') . '@' . getenv('DB_HOST') . '/' . getenv('DB_NAME');
+$connection = $mysql->createLazyConnection($uri);
+$productStorage = new ProductStorage($connection);
+$orderStorage = new OrderStorage($connection);
 
 $routes = new RouteCollector(new Std(), new GroupCountBased());
 
-$routes->get('/products', new GetAllProducts());
-$routes->post('/products', new CreateProduct());
-$routes->get('/products/{id:\d+}', new GetProductById());
-$routes->put('/products/{id:\d+}', new UpdateProduct());
-$routes->delete('/products/{id:\d+}', new DeleteProduct());
+$routes->get('/', function () {
+    return new \React\Http\Response(200, ['Content-Type' => 'text/html'], "<h1>ReactPHP</h1>");
+});
 
-$routes->get('/orders', new GetAllOrders());
-$routes->post('/orders', new CreateOrder());
-$routes->get('/orders/{id:\d+}', new GetOrderById());
-$routes->delete('/orders/{id:\d+}', new DeleteOrder());
+$routes->get('/products', new GetAllProducts($productStorage));
+$routes->post('/products', new CreateProduct($productStorage));
+$routes->get('/products/{id:\d+}', new GetProductById($productStorage));
+$routes->put('/products/{id:\d+}', new UpdateProduct($productStorage));
+$routes->delete('/products/{id:\d+}', new DeleteProduct($productStorage));
+
+$routes->get('/orders', new GetAllOrders($orderStorage));
+$routes->post('/orders', new CreateOrder($orderStorage));
+$routes->get('/orders/{id:\d+}', new GetOrderById($orderStorage));
+$routes->delete('/orders/{id:\d+}', new DeleteOrder($orderStorage));
 
 $middleware = [
     new ErrorHandler(),
@@ -54,7 +72,7 @@ $server = new Server($middleware);
 $socket = new \React\Socket\Server('127.0.0.1:8888', $loop);
 $server->listen($socket);
 
-$server->on('error', function (Throwable $error) {
+$server->on('error', function (Throwable $error) use ($filesystem) {
     echo 'Error: ' . $error->getMessage() . PHP_EOL;
 });
 

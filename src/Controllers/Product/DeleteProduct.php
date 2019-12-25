@@ -9,13 +9,37 @@
 namespace App\Controllers\Product;
 
 
+use App\Controllers\ProductController;
 use App\Core\JsonResponse;
+use App\Exceptions\ProductNotFound;
+use App\Storage\ProductStorage;
+use Exception;
 use Psr\Http\Message\ServerRequestInterface;
 
-final class DeleteProduct
+final class DeleteProduct extends ProductController
 {
+    public function __construct(ProductStorage $storage)
+    {
+        parent::__construct($storage);
+    }
+
     public function __invoke(ServerRequestInterface $request, string $id)
     {
-        return JsonResponse::ok(json_encode(['message' => "DELETE request to /products/{$id}"]));
+        return $this->storage->delete((int)$id)
+            ->then(
+                function () {
+                    return JsonResponse::ok([]);
+                }
+            )
+            ->otherwise(
+                function (ProductNotFound $error) {
+                    return JsonResponse::notFound();
+                }
+            )
+            ->otherwise(
+                function (Exception $error) {
+                return JsonResponse::internalServerError($error->getMessage());
+                }
+            );
     }
 }

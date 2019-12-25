@@ -15,6 +15,10 @@ final class JsonResponse extends Response
 {
     public function __construct(int $statusCode, $data = null)
     {
+//        if (is_array($data) || is_object($data)) {
+//            $data = json_encode($data);
+//        }
+
         parent::__construct(
             $statusCode,
             ['Content-Type' => 'application/json'],
@@ -30,5 +34,10 @@ final class JsonResponse extends Response
     public static function internalServerError(string $reason): self
     {
         return new self(500, ['message' => $reason]);
+    }
+
+    public static function notFound(): self
+    {
+        return new self(404);
     }
 }
