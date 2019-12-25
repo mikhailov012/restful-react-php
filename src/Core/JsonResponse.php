@@ -15,9 +15,9 @@ final class JsonResponse extends Response
 {
     public function __construct(int $statusCode, $data = null)
     {
-//        if (is_array($data) || is_object($data)) {
-//            $data = json_encode($data);
-//        }
+        if (is_array($data) || is_object($data)) {
+            $data = json_encode($data);
+        }
 
         parent::__construct(
             $statusCode,
