@@ -1,11 +1,12 @@
 <?php
 
 use App\Models\Chat\ConnectionPool;
+use React\EventLoop\Factory;
 use React\Socket\ConnectionInterface;
 
 require 'vendor/autoload.php';
 
-$loop = \React\EventLoop\Factory::create();
+$loop = Factory::create();
 
 $socket = new \React\Socket\Server('127.0.0.1:8888', $loop);
 $pool = new ConnectionPool();
